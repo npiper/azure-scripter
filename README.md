@@ -4,10 +4,10 @@ This Docker image provides a scripting environment for managing Azure environmen
 
 ## Features
 
-✅ Azure CLI for managing Azure resources
-✅ Terraform for infrastructure provisioning
-✅ PowerShell for automation and scripting
-✅ Additional tools and utilities: jq, vim, curl, bash, net-tools, git, unzip
+ ✅ Azure CLI for managing Azure resources
+ ✅ Terraform for infrastructure provisioning
+ ✅ PowerShell for automation and scripting
+ ✅ Additional tools and utilities: jq, vim, curl, bash, net-tools, git, unzip
 
 ## Getting Started
 
@@ -17,6 +17,7 @@ To build the Docker image, navigate to the directory containing the Dockerfile a
 
 ```sh
 docker build -t azure-scripting-env .
+```
 
 ## Run the Docker Container
 
@@ -34,13 +35,15 @@ docker run -it --rm \
 
 Replace the placeholders (your_client_id, your_subscription_id, etc.) with your actual Azure credentials and values.
 
-Contributing
+## Contributing
+
 Contributions are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, follow these steps:
 
-Create an issue on the GitHub repository to discuss your idea or problem.
-Fork the repository.
-Create a new branch with a descriptive name (feature/my-feature or bugfix/issue-123).
-Make your changes and ensure that your code adheres to best practices.
-Create a pull request from your branch to the main repository's main branch.
-Provide a detailed description of your changes in the pull request.
+ 1. Create an issue on the GitHub repository to discuss your idea or problem.
+ 2. Fork the repository.
+ 3. Create a new branch with a descriptive name (feature/my-feature or bugfix/issue-123).
+ 4. Make your changes and ensure that your code adheres to best practices.
+ 5. Create a pull request from your branch to the main repository's main branch.
+ 6. Provide a detailed description of your changes in the pull request.
+
 Let's work together to make this Docker image even better! 👥
