@@ -15,7 +15,7 @@ This Docker image provides a scripting environment for managing Azure environmen
 
 To build the Docker image, navigate to the directory containing the Dockerfile and execute the following command:
 
-```sh
+```
 docker build -t azure-scripting-env .
 ```
 
@@ -23,7 +23,7 @@ docker build -t azure-scripting-env .
 
 To run the Docker container and start an interactive shell session, use the following command:
 
-```sh
+```
 docker run -it --rm \
   -e ARM_CLIENT_ID=your_client_id \
   -e ARM_SUBSCRIPTION_ID=your_subscription_id \
