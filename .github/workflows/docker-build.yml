@@ -32,4 +32,4 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           NEW_README=$(cat README.md | jq -Rs .)
-          curl -s -H "Authorization: Bearer $DOCKERHUB_TOKEN" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' "https://hub.docker.com/v2/repositories/${REPO_NAME}/"
+          curl -s -H "Authorization: Bearer $DOCKERHUB_TOKEN" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' "https://hub.docker.com/v2/repositories/npiper/azure-scripter"
