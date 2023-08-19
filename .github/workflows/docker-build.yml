@@ -3,27 +3,30 @@ name: Update Docker Hub README
 on:
   push:
     branches:
-      - master  # Replace with your desired branch
+      - master
 
 jobs:
   update-dockerhub-readme:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Update Docker Hub README
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        tags: ${{ secrets.DOCKER_USERNAME }}/azure-scripter:latest
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Update Docker Hub Repository Description
-      run: |
-        REPO_NAME=${{ secrets.DOCKER_USERNAME }}/azure-scripter
-        DOCKERHUB_TOKEN="${{ secrets.DOCKER_PASSWORD }}"
-        NEW_README=$(cat README.md | jq -Rs .)
-        curl -s -H "Authorization: Bearer $DOCKERHUB_TOKEN" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' "https://hub.docker.com/v2/repositories/${REPO_NAME}/"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image
+        run: |
+          docker build -t azure-scripter .
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker tag azure-scripter ${{ secrets.DOCKER_USERNAME }}/azure-scripter
+          docker push ${{ secrets.DOCKER_USERNAME }}/azure-scripter
+
+      - name: Update Docker Hub README
+        env:
+          REPO_NAME: your-docker-username/azure-scripter
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          NEW_README=$(cat README.md | jq -Rs .)
+          curl -s -H "Authorization: Bearer $DOCKERHUB_TOKEN" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' "https://hub.docker.com/v2/repositories/${REPO_NAME}/"
