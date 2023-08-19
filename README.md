@@ -1,13 +1,13 @@
-# Azure Scripting Environment Docker Image ��
+# Azure Scripting Environment Docker Image 💻
 
 This Docker image provides a scripting environment for managing Azure environments using the Azure CLI, Terraform, and PowerShell. It's equipped with essential tools and utilities to streamline your scripting and infrastructure-as-code tasks.
 
 ## Features
 
- ✅ Azure CLI for managing Azure resources
- ✅ Terraform for infrastructure provisioning
- ✅ PowerShell for automation and scripting
- ✅ Additional tools and utilities: jq, vim, curl, bash, net-tools, git, unzip
+✅ Azure CLI for managing Azure resources
+✅ Terraform for infrastructure provisioning
+✅ PowerShell for automation and scripting
+✅ Additional tools and utilities: jq, vim, curl, bash, net-tools, git, unzip
 
 ## Getting Started
 
