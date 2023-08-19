@@ -1,0 +1,44 @@
+# Set your environment variables
+$resourceGroupName = $env:RESOURCE_GROUP_NAME
+$location = $env:LOCATION
+$vmName = $env:VM_NAME
+$adminUsername = $env:ADMIN_USERNAME
+$adminPassword = $env:ADMIN_PASSWORD
+$subnetName = $env:SUBNET_NAME
+$vnetName = $env:VNET_NAME
+$webServerScript = $env:WEB_SERVER_SCRIPT
+
+# Login to Azure
+Connect-AzAccount
+
+# Create a resource group
+New-AzResourceGroup -Name $resourceGroupName -Location $location
+
+# Create a virtual network
+$vnet = New-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $vnetName -Location $location -AddressPrefix "10.0.0.0/16"
+
+# Create a subnet
+Add-AzVirtualNetworkSubnetConfig -Name $subnetName -VirtualNetwork $vnet -AddressPrefix "10.0.1.0/24" | Set-AzVirtualNetwork
+
+# Create a public IP
+$pip = New-AzPublicIpAddress -ResourceGroupName $resourceGroupName -Name "${vmName}-pip" -Location $location -AllocationMethod Dynamic
+
+# Create a NIC
+$nic = New-AzNetworkInterface -ResourceGroupName $resourceGroupName -Name "${vmName}-nic" -Location $location -SubnetId $vnet.Subnets[0].Id -PublicIpAddressId $pip.Id
+
+# Create a virtual machine
+$vmConfig = New-AzVMConfig -VMName $vmName -VMSize "Standard_B1ms"
+$vmConfig = Set-AzVMOperatingSystem -VM $vmConfig -Linux -ComputerName $vmName -Credential (Get-Credential -UserName $adminUsername -Password $adminPassword)
+$vmConfig = Set-AzVMSourceImage -VM $vmConfig -PublisherName "Canonical" -Offer "UbuntuServer" -Skus "16.04-LTS" -Version "latest"
+$vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $nic.Id
+$vm = New-AzVM -ResourceGroupName $resourceGroupName -Location $location -VM $vmConfig
+
+# Install Apache and copy test page
+Invoke-AzVMRunCommand -ResourceGroupName $resourceGroupName -VMName $vmName -CommandId "RunShellScript" -ScriptPath $webServerScript
+
+# Display VM details
+$vm | Format-Table -AutoSize
+
+# Disconnect from Azure
+Disconnect-AzAccount
+
