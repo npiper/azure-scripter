@@ -19,11 +19,11 @@ To build the Docker image, navigate to the directory containing the Dockerfile a
 docker build -t azure-scripting-env .
 ```
 
-## Run the Docker Container
+## Running the Docker Container
 
 To run the Docker container and start an interactive shell session, use the following command:
 
-```
+```sh
 docker run -it --rm \
   -e ARM_CLIENT_ID=your_client_id \
   -e ARM_SUBSCRIPTION_ID=your_subscription_id \
@@ -39,11 +39,11 @@ Replace the placeholders (your_client_id, your_subscription_id, etc.) with your 
 
 Contributions are welcome! If you encounter any issues, have suggestions, or want to contribute improvements, follow these steps:
 
- 1. Create an issue on the GitHub repository to discuss your idea or problem.
- 2. Fork the repository.
- 3. Create a new branch with a descriptive name (feature/my-feature or bugfix/issue-123).
- 4. Make your changes and ensure that your code adheres to best practices.
- 5. Create a pull request from your branch to the main repository's main branch.
- 6. Provide a detailed description of your changes in the pull request.
+1. Create an issue on the GitHub repository to discuss your idea or problem.
+2. Fork the repository.
+3. Create a new branch with a descriptive name (feature/my-feature or bugfix/issue-123).
+4. Make your changes and ensure that your code adheres to best practices.
+5. Create a pull request from your branch to the main repository's main branch.
+6. Provide a detailed description of your changes in the pull request.
 
 Let's work together to make this Docker image even better! 👥
