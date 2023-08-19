@@ -23,7 +23,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Update Docker Hub Repository Description
       run: |
-           REPO_NAME=${{ secrets.DOCKER_USERNAME }}/azure-scripter
-           DOCKERHUB_TOKEN="${{ secrets.DOCKERHUB_PASSWORD }}"
-           NEW_README=$(cat README.md | jq -Rs .)
-           curl -s -H "Authorization: Bearer ${DOCKERHUB_TOKEN}" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' https://hub.docker.com/v2/repositories/${REPO_NAME}/
+        REPO_NAME=${{ secrets.DOCKER_USERNAME }}/azure-scripter
+        DOCKERHUB_TOKEN="${{ secrets.DOCKERHUB_PASSWORD }}"
+        NEW_README=$(cat README.md | jq -Rs .)
+        curl -s -H "Authorization: Bearer $DOCKERHUB_TOKEN" -H "Content-Type: application/json" -X PATCH -d '{"full_description": "'"${NEW_README}"'"}' "https://hub.docker.com/v2/repositories/${REPO_NAME}/"
