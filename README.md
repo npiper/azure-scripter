@@ -56,6 +56,6 @@ Source code:
  * [createVMS.sh](./arm-templates/createVMS.sh)
  * [cleanup.sh](./arm-templates/cleanup.sh)
 
-![Image](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/npiper/azure-scripter/master/Arch.puml)
+![Image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/npiper/azure-scripter/master/Arch.puml)
 
 [Source Plant UML](./Arch.puml)
