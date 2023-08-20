@@ -47,3 +47,15 @@ Contributions are welcome! If you encounter any issues, have suggestions, or wan
 6. Provide a detailed description of your changes in the pull request.
 
 Let's work together to make this Docker image even better! 👥
+
+## Sample Script
+
+Sample script to set up a VM for a Disaster recovery drill from UK South to UK West using environment variables injected at Docker run.
+
+Source code:
+ * [createVMS.sh](./arm-templates/createVMS.sh)
+ * [cleanup.sh](./arm-templates/cleanup.sh)
+
+![Image](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/npiper/azure-scripter/master/Arch.puml)
+
+[Source Plant UML](./Arch.puml)
