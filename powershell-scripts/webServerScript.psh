@@ -1,0 +1,16 @@
+$webServerScript = @"
+#!/bin/bash
+
+# Update package information
+apt-get update
+
+# Install Apache web server
+apt-get install -y apache2
+
+# Create a simple test page
+echo "<html><body><h1>This is a test page served by Apache!</h1></body></html>" > /var/www/html/index.html
+
+# Start Apache service
+systemctl start apache2
+systemctl enable apache2
+"@

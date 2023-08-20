@@ -1,12 +1,17 @@
 # Set your environment variables
-$resourceGroupName = $env:RESOURCE_GROUP_NAME
-$location = $env:LOCATION
-$vmName = $env:VM_NAME
-$adminUsername = $env:ADMIN_USERNAME
-$adminPassword = $env:ADMIN_PASSWORD
-$subnetName = $env:SUBNET_NAME
-$vnetName = $env:VNET_NAME
-$webServerScript = $env:WEB_SERVER_SCRIPT
+$resourceGroupName = "UKSouthResourceGroup"
+$location = "uksouth"
+$vmName = "MyUKSouthVM"
+$adminUsername = "admin"
+$adminPassword = "P@ssw0rd123"
+$subnetName = "SubnetUKSouth"
+$vnetName = "VNetUKSouth"
+$webServerScript = "/app/powershell-scripts/webServerScript.psh"
+
+# Add debug messages
+Write-Debug "Resource Group Name: $resourceGroupName"
+Write-Debug "Location: $location"
+Write-Debug "VM Name: $vmName"
 
 # Login to Azure
 Connect-AzAccount
@@ -41,4 +46,3 @@ $vm | Format-Table -AutoSize
 
 # Disconnect from Azure
 Disconnect-AzAccount
-
