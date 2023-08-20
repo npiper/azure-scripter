@@ -1,9 +1,14 @@
 @startuml
-!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
-!includeurl AzurePuml/AzureCommon.puml
-!includeurl AzurePuml/Compute/all.puml
-!includeurl AzurePuml/Networking/all.puml
-!includeurl AzurePuml/Management/all.puml
+
+
+!include <azure/AzureCommon>
+!include <azure/Compute/AzureVirtualMachine>
+!include <azure/Management/AzureResourceGroups>
+!include <azure/Management/AzureRecoveryServiceVault>
+!include <azure/Networking/AzureVirtualNetwork>
+!include <azure/Networking/AzureSubnet>
+!include <azure/Networking/AzureNetworkInterface>
+!include <azure/Networking/AzurePublicIPAddress>
 
 AzureResourceGroups(UKSouthResourceGroup, "UKSouthResourceGroup", "Resource Group", "Main resource group for the UK South region") {
 
