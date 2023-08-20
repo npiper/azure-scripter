@@ -1,46 +1,45 @@
-#!/bin/bash
-
 # Authenticate with Azure
 az login --service-principal --username "$ARM_CLIENT_ID" --password "$ARM_CLIENT_SECRET" --tenant "$ARM_TENANT_ID"
 
-
 # Define environment variables
 resourceGroupName="UKSouthResourceGroup"
+recoveryResourceGroupName="RecoveryResourceGroup"
 location="uksouth"
+recoveryLocation="ukwest"  # Location for the recovery region
 vmName="MyUKSouthVM"
 adminUsername="adminuser"
-adminPassword="P@ssw0rd1234567"
+adminPassword="P@ssw0rd123"
 subnetName="SubnetUKSouth"
 vnetName="VNetUKSouth"
 webServerScript="/app/powershell-scripts/webServerScript.psh"
 
-# Create a resource group
-echo "Creating resource group..."
-az group create --name $resourceGroupName --location $location
+# Create a resource group for recovery
+echo "Creating recovery resource group..."
+az group create --name $recoveryResourceGroupName --location $recoveryLocation
 
-# Create a virtual network
-echo "Creating virtual network..."
-az network vnet create --resource-group $resourceGroupName --name $vnetName --address-prefixes "10.0.0.0/16" --location $location
+# Create a virtual network in the recovery region
+echo "Creating virtual network in recovery region..."
+az network vnet create --resource-group $recoveryResourceGroupName --name "${vnetName}-recovery" --address-prefixes "10.0.0.0/16" --location $recoveryLocation
 
-# Create a subnet
-echo "Creating subnet..."
-az network vnet subnet create --resource-group $resourceGroupName --vnet-name $vnetName --name $subnetName --address-prefix "10.0.1.0/24"
+# Create a subnet in the recovery region
+echo "Creating subnet in recovery region..."
+az network vnet subnet create --resource-group $recoveryResourceGroupName --vnet-name "${vnetName}-recovery" --name "${subnetName}-recovery" --address-prefix "10.0.1.0/24"
 
-# Create a public IP
-echo "Creating public IP..."
-az network public-ip create --resource-group $resourceGroupName --name "${vmName}-pip" --location $location --allocation-method Dynamic
+# Create a recovery vault
+echo "Creating recovery vault..."
+az backup vault create --name "RecoveryVault" --resource-group $recoveryResourceGroupName --location $recoveryLocation
 
-# Create a NIC
-echo "Creating network interface..."
-az network nic create --resource-group $resourceGroupName --name "${vmName}-nic" --vnet-name $vnetName --subnet $subnetName --public-ip-address "${vmName}-pip"
+# Configure the VM for disaster recovery
+echo "Configuring VM for disaster recovery..."
+az backup protection enable-for-vm --resource-group $resourceGroupName --vault-name "RecoveryVault" --vm $vmName --policy-name "DefaultPolicy"
 
-# Create a virtual machine
-echo "Creating virtual machine..."
-az vm create --resource-group $resourceGroupName --name $vmName --size "Standard_B1ms" --admin-username $adminUsername --admin-password $adminPassword --image "Canonical:UbuntuServer:16.04-LTS:latest" --nics "${vmName}-nic"
+# Wait for the policy to be applied
+echo "Waiting for policy to be applied..."
+sleep 300  # Wait for 5 minutes (adjust as needed)
 
-# Install Apache and copy test page
-echo "Installing Apache..."
-az vm run-command invoke --resource-group $resourceGroupName --name $vmName --command-id "RunShellScript" --scripts "$webServerScript"
+# Install Azure Site Recovery extension on the VM
+echo "Installing Azure Site Recovery extension..."
+az vm extension set --resource-group $resourceGroupName --vm-name $vmName --name "AzureSiteRecoveryAgent" --publisher "Microsoft.Azure.RecoveryServices" --version "2.0" --settings "{}"
 
 # Display VM details
 echo "Displaying VM details..."

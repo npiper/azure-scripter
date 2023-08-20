@@ -1,0 +1,38 @@
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/all.puml
+!includeurl AzurePuml/Networking/all.puml
+!includeurl AzurePuml/Management/all.puml
+
+AzureResourceGroups(UKSouthResourceGroup, "UKSouthResourceGroup", "Resource Group", "Main resource group for the UK South region") {
+
+  AzureVirtualNetwork(VNetUKSouth, "VNetUKSouth", "Virtual Network", "Virtual network for UK South region") {
+
+  AzureSubnet(SubnetUKSouth, "SubnetUKSouth", "Subnet", "Subnet within UK South virtual network") {
+
+    AzureNetworkInterface(MyUKSouthVM-nic, "MyUKSouthVM-nic", "Network Interface", "Network interface for the UK South VM") {
+    }
+
+    AzureVirtualMachine(MyUKSouthVM, "MyUKSouthVM", "Virtual Machine", "Linux server for the UK South region") {
+    }
+
+  }
+ }
+
+
+
+AzurePublicIPAddress(MyUKSouthVM-pip, "MyUKSouthVM-pip", "Public IP Address", "Public IP address for the UK South VM") {
+}
+
+
+
+AzureRecoveryServiceVault(MyRecoveryVault, "MyRecoveryVault", "Recovery Services Vault", "Recovery vault for Azure Site Recovery") {
+}
+
+
+
+}
+
+
+@enduml
+

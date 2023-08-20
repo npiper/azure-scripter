@@ -5,15 +5,19 @@ az login --service-principal --username "$ARM_CLIENT_ID" --password "$ARM_CLIENT
 
 # Define environment variables
 resourceGroupName="UKSouthResourceGroup"
-location="uksouth"
+recoveryVaultName="MyRecoveryVault"
 vmName="MyUKSouthVM"
 
-# Delete virtual machine if exists
-echo "Deleting virtual machine if exists..."
-az vm delete --resource-group $resourceGroupName --name $vmName --yes --no-wait 2>/dev/null
+# Delete the virtual machine
+echo "Deleting virtual machine..."
+az vm delete --resource-group $resourceGroupName --name $vmName --yes --no-wait
 
-# Delete resource group and all resources
-echo "Deleting resource group and all resources..."
+# Delete the Recovery Vault
+echo "Deleting Recovery Vault..."
+az backup vault delete --name $recoveryVaultName --resource-group $resourceGroupName --yes
+
+# Delete the resource group
+echo "Deleting resource group..."
 az group delete --name $resourceGroupName --yes --no-wait
 
 # Disconnect from Azure
