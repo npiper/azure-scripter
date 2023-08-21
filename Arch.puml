@@ -24,7 +24,10 @@ rectangle "UKSouth" {
 rectangle "UKWest" {
     AzureResourceGroups(UKWestResourceGroup, "UKWestResourceGroup", "Resource Group", "Main resource group for the UK West region") {
         AzureVirtualNetwork(VNetUKWest, "VNetUKWest", "Virtual Network", "Virtual network for the secondary region") {
-            AzureSubnet(SubnetUKWest, "SubnetUKWest", "Subnet", "Subnet in the secondary region")
+            AzureSubnet(SubnetUKWest, "SubnetUKWest", "Subnet", "Subnet in the secondary region") {
+
+                rectangle "<color:red><$AzureVirtualMachine></color>\n Failover VM"as failover #FFFFFF
+            }
         }
         
         AzureRecoveryServiceVault(RecoveryVault, "RecoveryVault", "Recovery Services Vault", "Vault for backup and disaster recovery")
