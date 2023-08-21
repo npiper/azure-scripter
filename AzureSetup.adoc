@@ -1,0 +1,58 @@
+= Setting Up an Azure Sandbox User Account
+
+1. *Sign Up for Azure*: If you don't have an Azure account, link:https://azure.com/free[sign up for a free account].
+
+2. *Azure Portal*: Access the link:https://portal.azure.com/[Azure Portal] using your Azure credentials.
+
+3. *Create a New User*: Navigate to *Azure Active Directory* in the portal's left-hand menu. Under *Users*, select *New user*. Follow the prompts to create a new user.
+
+4. *Assign Roles*: Assign roles to your new user. You might want to assign them the *Contributor* role to allow them to create resources. Navigate to your subscription, go to *Access control (IAM)*, and add the new user as a contributor.
+
+== Creating a Service Principal
+
+1. *Service Principal*: A service principal is an application within Azure Active Directory that can access resources. This is often used for automation tasks.
+
+2. *App Registrations*: Navigate to *Azure Active Directory* > *App registrations*. Click on *New registration* and fill out the necessary information.
+
+3. *API Permissions*: In your new app registration, go to *API permissions* and add the necessary permissions depending on what your script does. For your case, it might need permissions like *Azure Service Management*.
+
+4. *Certificates & Secrets*: Under *Certificates & secrets*, create a new client secret. This is like a password for your service principal.
+
+5. *Subscription Access*: In your subscription's *Access control (IAM)*, assign the service principal a role like *Contributor* so it can create resources.
+
+== Setting Local Environment Variables
+
+Before running your Docker command, set the following environment variables in your terminal session. Copy the values from your Azure setup and create local environment variables:
+
+* `ARM_CLIENT_ID`: The client ID of your app registration.
+* `ARM_SUBSCRIPTION_ID`: The ID of your Azure subscription.
+* `ARM_CLIENT_SECRET`: The client secret you generated for your service principal.
+* `ARM_TENANT_ID`: The ID of your Azure Active Directory tenant.
+* `ARM_SVCID_PASS`: The password you set for your service principal.
+
+For example, you can set these variables like this in your terminal:
+
+[source,bash]
+----
+export ARM_CLIENT_ID=your_client_id
+export ARM_SUBSCRIPTION_ID=your_subscription_id
+export ARM_CLIENT_SECRET=your_client_secret
+export ARM_TENANT_ID=your_tenant_id
+export ARM_SVCID_PASS=your_service_principal_password
+----
+
+== Running the Docker Image
+
+With your environment variables set, you're ready to run your Docker image. Use the `docker run` command with the `-e` option to pass in the environment variables:
+
+[source,bash]
+----
+docker run -e ARM_CLIENT_ID=$ARM_CLIENT_ID \
+  -e ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID \
+  -e ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET \
+  -e ARM_TENANT_ID=$ARM_TENANT_ID \
+  -e ARM_SVCID_PASS=$ARM_SVCID_PASS \
+  your_docker_image
+----
+
+Replace `your_docker_image` with the actual name of the Docker image you want to run.

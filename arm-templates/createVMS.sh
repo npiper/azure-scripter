@@ -39,8 +39,7 @@ az network vnet subnet create --resource-group $recoveryResourceGroupName --vnet
 
 # Create a recovery vault
 echo "Creating recovery vault..."
-az backup vault create --name "RecoveryVault" --resource-group $recoveryResourceGroupName --location $location
-
+az backup vault create --name "RecoveryVault" --resource-group $recoveryResourceGroupName --location $recoveryLocation
 
 # Create the virtual machine
 echo "Creating the virtual machine..."
@@ -56,7 +55,7 @@ az vm create \
 
 # Configure the VM for disaster recovery
 echo "Configuring VM for disaster recovery..."
-az backup protection enable-for-vm --resource-group $resourceGroupName --vault-name "RecoveryVault" --vm $vmName --policy-name "DefaultPolicy"
+az backup protection enable-for-vm --resource-group $recoveryResourceGroupName --vault-name "RecoveryVault" --vm $vmName --policy-name "DefaultPolicy"
 
 # Wait for the policy to be applied
 echo "Waiting for policy to be applied..."
