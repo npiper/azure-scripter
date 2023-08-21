@@ -1,41 +1,35 @@
 @startuml
+!define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Compute/all.puml
+!includeurl AzurePuml/Networking/all.puml
+!includeurl AzurePuml/Management/all.puml
 
+rectangle "UKSouth" {
+    AzureResourceGroups(UKSouthResourceGroup, "UKSouthResourceGroup", "Resource Group", "Main resource group for the UK South region") {
+        AzureVirtualNetwork(VNetUKSouth, "VNetUKSouth", "Virtual Network", "Virtual network for the primary region") {
+            AzureSubnet(SubnetUKSouth, "SubnetUKSouth", "Subnet", "Subnet in the primary region") {
+                         AzureVirtualMachine(MyUKSouthVM, "MyUKSouthVM", "Virtual Machine", "Primary virtual machine") {
+                         AzureNetworkInterface(NetworkInterfaceMyUKSouthVM, "NetworkInterfaceMyUKSouthVM", "Network Interface", "Network interface for the primary VM")
+                         }
+            }
+        }
+        
+       
+        
 
-!include <azure/AzureCommon>
-!include <azure/Compute/AzureVirtualMachine>
-!include <azure/Management/AzureResourceGroups>
-!include <azure/Management/AzureRecoveryServiceVault>
-!include <azure/Networking/AzureVirtualNetwork>
-!include <azure/Networking/AzureSubnet>
-!include <azure/Networking/AzureNetworkInterface>
-!include <azure/Networking/AzurePublicIPAddress>
-
-AzureResourceGroups(UKSouthResourceGroup, "UKSouthResourceGroup", "Resource Group", "Main resource group for the UK South region") {
-
-  AzureVirtualNetwork(VNetUKSouth, "VNetUKSouth", "Virtual Network", "Virtual network for UK South region") {
-
-  AzureSubnet(SubnetUKSouth, "SubnetUKSouth", "Subnet", "Subnet within UK South virtual network") {
-
-    AzureNetworkInterface(MyUKSouthVM-nic, "MyUKSouthVM-nic", "Network Interface", "Network interface for the UK South VM") {
     }
-
-    AzureVirtualMachine(MyUKSouthVM, "MyUKSouthVM", "Virtual Machine", "Linux server for the UK South region") {
-    }
-
-  }
- }
-
-
-
-AzurePublicIPAddress(MyUKSouthVM-pip, "MyUKSouthVM-pip", "Public IP Address", "Public IP address for the UK South VM") {
 }
 
+rectangle "UKWest" {
+    AzureResourceGroups(UKWestResourceGroup, "UKWestResourceGroup", "Resource Group", "Main resource group for the UK West region") {
+        AzureVirtualNetwork(VNetUKWest, "VNetUKWest", "Virtual Network", "Virtual network for the secondary region") {
+            AzureSubnet(SubnetUKWest, "SubnetUKWest", "Subnet", "Subnet in the secondary region")
+        }
+        
+        AzureRecoveryServiceVault(RecoveryVault, "RecoveryVault", "Recovery Services Vault", "Vault for backup and disaster recovery")
+        
 
-
-AzureRecoveryServiceVault(MyRecoveryVault, "MyRecoveryVault", "Recovery Services Vault", "Recovery vault for Azure Site Recovery") {
-}
-
-
-
+    }
 }
 @enduml
