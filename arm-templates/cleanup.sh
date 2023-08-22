@@ -7,10 +7,24 @@ az login --service-principal --username "$ARM_CLIENT_ID" --password "$ARM_CLIENT
 resourceGroupName="UKSouthResourceGroup"
 recoveryResourceGroupName="RecoveryResourceGroup"
 vmName="MyUKSouthVM"
+recoveryVaultName="RecoveryVault"
 
-# Delete the recovery vault and its contents
-echo "Deleting recovery vault and its contents..."
-az backup vault delete --name "RecoveryVault" --resource-group $recoveryResourceGroupName --yes
+# Remove backup protection from the VM
+echo "Disabling backup protection for the VM..."
+az backup protection delete --resource-group $resourceGroupName --vault-name $recoveryVaultName --item-name $vmName --yes
+
+# Remove the VM's protection intent from the vault
+echo "Removing the VM's protection intent from the vault..."
+az backup protection intent remove --resource-group $resourceGroupName --vault-name $recoveryVaultName --item-name $vmName
+
+# Delete the VM from the backup vault
+echo "Deleting the VM from the backup vault..."
+az backup item delete --resource-group $resourceGroupName --vault-name $recoveryVaultName --item-name $vmName
+
+# Delete the recovery vault
+echo "Deleting the recovery vault..."
+az backup vault delete --name $recoveryVaultName --resource-group $recoveryResourceGroupName --yes
+
 
 # Delete the recovery resource group
 echo "Deleting recovery resource group..."

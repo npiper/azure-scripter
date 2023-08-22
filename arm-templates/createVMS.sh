@@ -39,27 +39,48 @@ az network vnet subnet create --resource-group $recoveryResourceGroupName --vnet
 
 # Create a recovery vault
 echo "Creating recovery vault..."
-az backup vault create --name "RecoveryVault" --resource-group $recoveryResourceGroupName --location $recoveryLocation
+az backup vault create --name "RecoveryVault" --resource-group $resourceGroupName --location $location
+
 
 # Create the virtual machine
 echo "Creating the virtual machine..."
 az vm create \
   --resource-group $resourceGroupName \
   --name $vmName \
-  --image UbuntuLTS \
+  --image Ubuntu2204 \
+  --public-ip-sku Standard \
   --admin-username $adminUsername \
   --admin-password $adminPassword \
   --vnet-name $vnetName \
   --subnet $subnetName \
   --location $location
 
+# Wait for the VM to be provisioned
+echo "Waiting for the virtual machine to be provisioned..."
+while [[ $(az vm show -d -g $resourceGroupName -n $vmName --query provisioningState -o tsv) != "Succeeded" ]]; do
+    echo "VM provisioning state: $(az vm show -d -g $resourceGroupName -n $vmName --query provisioningState -o tsv)"
+    sleep 10
+done
+
+
+echo "Resource Group Name: $resourceGroupName"
+echo "Recovery Resource Group Name: $recoveryResourceGroupName"
+
+
+# Get the VM ID
+vmId=$(az vm show -g $resourceGroupName -n $vmName --query id --output tsv)
+
 # Configure the VM for disaster recovery
 echo "Configuring VM for disaster recovery..."
-az backup protection enable-for-vm --resource-group $recoveryResourceGroupName --vault-name "RecoveryVault" --vm $vmName --policy-name "DefaultPolicy"
+az backup protection enable-for-vm --resource-group $resourceGroupName --vault-name "RecoveryVault" --vm $vmId --policy-name "DefaultPolicy"
+
 
 # Wait for the policy to be applied
 echo "Waiting for policy to be applied..."
-sleep 300  # Wait for 5 minutes (adjust as needed)
+while [[ $(az backup protection show --resource-group $resourceGroupName --vault-name "RecoveryVault" --container-name $vmName --query properties.policyState -o tsv) != "Succeeded" ]]; do
+    echo "Policy state: $(az backup protection show --resource-group $resourceGroupName --vault-name "RecoveryVault" --container-name $vmName --query properties.policyState -o tsv)"
+    sleep 10
+done
 
 # Install Azure Site Recovery extension on the VM
 echo "Installing Azure Site Recovery extension..."

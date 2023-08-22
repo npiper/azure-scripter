@@ -1,0 +1,31 @@
+
+## Egress required during Site Recovery (Firewall)
+
+link:https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-about-networking#outbound-connectivity-for-urls[Outbound connectivity for URL's]
+
+
+```
+*.blob.core.windows.net
+login.microsoftonline.com
+*.hypervrecoverymanager.windowsazure.com
+*.servicebus.windows.net
+*.vault.azure.net
+*.automation.ext.azure.com
+
+
+NSG: Allow HTTPS outbound" rules to port:443 for all the required IP address range - in both region configurations required.
+```
+
+An option is also to create a set of up to 5 NSG rules to allow access to Azure Site Recovery services.
+link:https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-about-networking#outbound-connectivity-using-service-tags[Outbound connectivity with Service Tags]
+
+## Egress via Firewalls / Network appliances
+
+Access to Microsoft URL's going via a network appliance might get throttled if all the replication traffic passes through the NVA
+creating a network service endpoint in your virtual network for "Storage". 
+
+link:https://learn.microsoft.com/en-us/azure/site-recovery/azure-to-azure-about-networking#network-virtual-appliance-configuration[NVA Configuration]
+
+## VM Network Configuration
+
+

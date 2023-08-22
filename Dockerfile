@@ -1,5 +1,5 @@
 # Use the PowerShell image as the base image
-FROM mcr.microsoft.com/powershell:7.3-ubuntu-20.04
+FROM mcr.microsoft.com/powershell:ubuntu-22.04-arm32
 
 # Set environment variables for Azure credentials
 ENV ARM_CLIENT_ID=""
