@@ -86,6 +86,9 @@ done
 echo "Installing Azure Site Recovery extension..."
 az vm extension set --resource-group $resourceGroupName --vm-name $vmName --name "AzureSiteRecoveryAgent" --publisher "Microsoft.Azure.RecoveryServices" --version "2.0" --settings "{}"
 
+az vm extension set --resource-group "UKSouthResourceGroup" --vm-name "MyUKSouthVM" --name "AzureSiteRecoveryAgent" --publisher "Microsoft.Azure.RecoveryServices" --version "2.0" --settings "{}"
+
+
 # Display VM details
 echo "Displaying VM details..."
 az vm show --resource-group $resourceGroupName --name $vmName --show-details --output table
